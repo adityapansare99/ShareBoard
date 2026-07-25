@@ -3,9 +3,9 @@ spring:
     name: planar
 
   datasource:
-    url: jdbc:postgresql://${PLANAR_DB_HOST}:${PLANAR_DB_PORT}/${PLANAR_DB_NAME}
-    username: ${PLANAR_DB_USERNAME}
-    password: ${PLANAR_DB_PASSWORD}
+    url: ${DATABASE_URL}
+    username: ${PGUSER}
+    password: ${PGPASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
