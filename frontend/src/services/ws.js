@@ -16,9 +16,19 @@ class WebSocketClient {
     this.boardCode = boardCode;
     this.sessionId = sessionId;
 
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = (import.meta.env && import.meta.env.VITE_WS_URL) || window.location.host;
-    const url = `${protocol}//${host}/ws`;
+    // When VITE_BACKEND_URL is set (frontend & backend on different origins,
+    // e.g. Netlify → Railway) derive the ws origin from it; otherwise stay
+    // same-origin so the Vite dev proxy / nginx can forward /ws transparently.
+    const backend = import.meta.env && import.meta.env.VITE_BACKEND_URL;
+    let wsOrigin;
+    if (backend) {
+      const u = new URL(backend);
+      wsOrigin = `${u.protocol === 'https:' ? 'wss:' : 'ws:'}//${u.host}`;
+    } else {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      wsOrigin = `${protocol}//${window.location.host}`;
+    }
+    const url = `${wsOrigin}/ws`;
 
     this.ws = new WebSocket(url);
 
