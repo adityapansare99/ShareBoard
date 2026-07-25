@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: planar
+
+  datasource:
+    url: ${PLANAR_DB_URL:jdbc:h2:mem:planar;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
+    username: ${PLANAR_DB_USERNAME:sa}
+    password: ${PLANAR_DB_PASSWORD:}
+    driver-class-name: ${PLANAR_DB_DRIVER:org.h2.Driver}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  mail:
+    host: ${SMTP_HOST:smtp.gmail.com}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME:}
+    password: ${SMTP_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
+server:
+  port: 8080
+
+planar:
+  rate-limiter:
+    capacity: 60
+    refill-rate: 10
+    refill-interval-seconds: 1
