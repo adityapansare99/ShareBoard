@@ -41,8 +41,9 @@ spring:
     serialization:
       write-dates-as-timestamps: false
 
+# Railway injects PORT and routes the public URL to it; fall back to 8080 locally.
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 planar:
   rate-limiter:
