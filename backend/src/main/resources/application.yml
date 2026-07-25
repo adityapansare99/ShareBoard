@@ -44,6 +44,12 @@ spring:
 # Railway injects PORT and routes the public URL to it; fall back to 8080 locally.
 server:
   port: ${PORT:8080}
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
+        http-only: true
 
 planar:
   rate-limiter:
