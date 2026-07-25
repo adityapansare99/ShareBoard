@@ -3,10 +3,10 @@ spring:
     name: planar
 
   datasource:
-    url: ${DATABASE_URL:jdbc:h2:mem:planar;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
-    username: ${PLANAR_DB_USERNAME:sa}
-    password: ${PLANAR_DB_PASSWORD:}
-    driver-class-name: ${PLANAR_DB_DRIVER:org.h2.Driver}
+    url: jdbc:postgresql://${PLANAR_DB_HOST}:${PLANAR_DB_PORT}/${PLANAR_DB_NAME}
+    username: ${PLANAR_DB_USERNAME}
+    password: ${PLANAR_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     open-in-view: false
