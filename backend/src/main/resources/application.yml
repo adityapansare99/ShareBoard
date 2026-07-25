@@ -3,7 +3,7 @@ spring:
     name: planar
 
   datasource:
-    url: ${PLANAR_DB_URL:jdbc:h2:mem:planar;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
+    url: ${DATABASE_URL:jdbc:h2:mem:planar;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}
     username: ${PLANAR_DB_USERNAME:sa}
     password: ${PLANAR_DB_PASSWORD:}
     driver-class-name: ${PLANAR_DB_DRIVER:org.h2.Driver}
