@@ -56,10 +56,11 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
-        <!-- Loads backend/.env into the Spring environment so ${GOOGLE_CLIENT_ID}
-             etc. in application.yml resolve from the local .env file.
-             Use the springboot3 module (not bare spring-dotenv) so the Boot
-             EnvironmentPostProcessor auto-registers the property source. -->
+        <dependency>
+            <groupId>com.resend</groupId>
+            <artifactId>resend-java</artifactId>
+            <version>3.1.0</version>
+        </dependency>
         <dependency>
             <groupId>me.paulschwarz</groupId>
             <artifactId>springboot3-dotenv</artifactId>
