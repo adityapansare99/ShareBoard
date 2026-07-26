@@ -23,16 +23,15 @@ spring:
       path: /h2-console
 
   mail:
-    host: ${SMTP_HOST:smtp.gmail.com}
-    port: ${SMTP_PORT:587}
-    username: ${SMTP_USERNAME:}
-    password: ${SMTP_PASSWORD:}
+    host: smtp.gmail.com
+    port: 465
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
     properties:
       mail:
-        debug: true
         smtp:
           auth: true
-          starttls:
+          ssl:
             enable: true
           connectiontimeout: 30000
           timeout: 30000
