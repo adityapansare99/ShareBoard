@@ -35,32 +35,26 @@ public class EmailService {
 
         try {
 
+            log.info("Before Resend send");
+
             CreateEmailOptions params = CreateEmailOptions.builder()
                     .from("Planar <onboarding@resend.dev>")
                     .to(recipientEmail)
                     .subject("Planar — Your Account Verification Code")
                     .html("""
-                            <h2>Welcome to Planar!</h2>
-
-                            <p>Your 6-digit email verification code is:</p>
-
-                            <h1 style="letter-spacing:5px;">%s</h1>
-
-                            <p>This code will expire in <b>5 minutes</b>.</p>
-
-                            <p>If you did not request this code, you can safely ignore this email.</p>
-                            """.formatted(otpCode))
+                    <h2>Welcome to Planar!</h2>
+                    <p>Your OTP is: <b>%s</b></p>
+                    """.formatted(otpCode))
                     .build();
 
             resend.emails().send(params);
 
+            log.info("After Resend send");
             log.info("Successfully sent OTP email to {}", recipientEmail);
 
-        } catch (ResendException e) {
-
+        } catch (Exception e) {
             log.error("Could not send email", e);
             throw new RuntimeException("Failed to send OTP email", e);
-
         }
     }
 }
