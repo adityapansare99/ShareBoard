@@ -37,11 +37,11 @@ public class AuthController {
 
     /**
      * Spring Security 6 defaults requireExplicitSave=true, so setting the
-     * SecurityContext on the current request does NOT persist it to the session.
-     * We must save explicitly via the repository.
+     * SecurityContext on the current request does NOT persist it to the
+     * session. We must save explicitly via the repository.
      */
-    private final SecurityContextRepository securityContextRepository =
-        new HttpSessionSecurityContextRepository();
+    private final SecurityContextRepository securityContextRepository
+            = new HttpSessionSecurityContextRepository();
 
     @PostMapping("/send-otp")
     public ResponseEntity<Map<String, Object>> sendOtp(@RequestBody Map<String, String> body) {
@@ -56,12 +56,20 @@ public class AuthController {
         }
 
         String otp = otpService.generateOtp(normalizedEmail);
-        emailService.sendOtpEmail(normalizedEmail, otp);
 
-        return ResponseEntity.ok(Map.of(
-            "success", true,
-            "message", "Verification OTP sent to " + normalizedEmail
-        ));
+        try {
+            emailService.sendOtpEmail(normalizedEmail, otp);
+
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "message", "Verification OTP sent to " + normalizedEmail
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body(Map.of(
+                    "success", false,
+                    "message", "Email could not be sent"
+            ));
+        }
     }
 
     @PostMapping("/register")
@@ -76,10 +84,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody @Valid LoginRequest req,
-                                                      HttpServletRequest request,
-                                                      HttpServletResponse response) {
+            HttpServletRequest request,
+            HttpServletResponse response) {
         UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken
-            .unauthenticated(req.email().trim().toLowerCase(), req.password());
+                .unauthenticated(req.email().trim().toLowerCase(), req.password());
         // BadCredentialsException -> mapped to 401 by AuthExceptionHandler
         Authentication auth = authenticationManager.authenticate(token);
 
@@ -92,9 +100,9 @@ public class AuthController {
 
         UserPrincipal up = (UserPrincipal) auth.getPrincipal();
         return ResponseEntity.ok(Map.of(
-            "authenticated", true,
-            "email", up.getEmail(),
-            "name", up.getName()
+                "authenticated", true,
+                "email", up.getEmail(),
+                "name", up.getName()
         ));
     }
 
@@ -114,9 +122,9 @@ public class AuthController {
             return ResponseEntity.ok(Map.of("authenticated", false));
         }
         return ResponseEntity.ok(Map.of(
-            "authenticated", true,
-            "email", userContext.getCurrentUserEmail(),
-            "name", userContext.getCurrentUserName()
+                "authenticated", true,
+                "email", userContext.getCurrentUserEmail(),
+                "name", userContext.getCurrentUserName()
         ));
     }
 }

@@ -17,8 +17,8 @@ public class EmailService {
     }
 
     /**
-     * Sends an OTP verification email to the user.
-     * Logs the OTP to the console/logger as well for dev mode/fallback.
+     * Sends an OTP verification email to the user. Logs the OTP to the
+     * console/logger as well for dev mode/fallback.
      */
     public void sendOtpEmail(String recipientEmail, String otpCode) {
         log.info("=================================================");
@@ -30,12 +30,13 @@ public class EmailService {
                 SimpleMailMessage message = new SimpleMailMessage();
                 message.setTo(recipientEmail);
                 message.setSubject("Planar — Your Account Verification Code");
-                message.setText("Welcome to Planar!\n\nYour 6-digit email verification code is: " + otpCode +
-                                 "\n\nThis code will expire in 5 minutes. If you did not request this code, please ignore this email.");
+                message.setText("Welcome to Planar!\n\nYour 6-digit email verification code is: " + otpCode
+                        + "\n\nThis code will expire in 5 minutes. If you did not request this code, please ignore this email.");
                 mailSender.send(message);
                 log.info("Successfully sent OTP email to {}", recipientEmail);
             } catch (Exception e) {
-                log.warn("Could not send email via JavaMailSender: {}. Fallback OTP in log: {}", e.getMessage(), otpCode);
+                log.error("Could not send email", e);
+                throw new RuntimeException(e);
             }
         } else {
             log.info("JavaMailSender not configured. Relying on logger OTP for dev mode: {}", otpCode);
